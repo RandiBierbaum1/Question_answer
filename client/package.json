@@ -1,18 +1,12 @@
 {
-  "name": "question_answer",
-  "version": "0.1.0",
+  "name": "kittens",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@reach/router": "^1.2.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongoose": "^5.7.7",
-    "morgan": "^1.9.1",
-    "reach-router": "0.0.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-router": "^5.0.1",
-    "react-scripts": "3.1.2"
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-scripts": "3.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,16 +17,10 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
