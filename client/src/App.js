@@ -1,49 +1,89 @@
 import React, {Component} from 'react';
-import {Router} from "@reach/router";
-import Kitten from "./Kitten";
-import Kittens from "./Kittens";
+import { Router } from "@reach/router";
+
+import Question from "./Question";
+import Questions from "./Questions";
 
 class App extends Component {
-    // API url from the file '.env' OR the file '.env.development'.
-    // The first file is only used in production.
-    API_URL = process.env.REACT_APP_API_URL;
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            kittens: []
-        };
-    }
+    this.state = {
+      data: []
+    };
+  }
 
-    componentDidMount() {
-        // Get everything from the API
-        this.getKittens().then(() => console.log("Kittens gotten!"));
-    }
+  componentDidMount() {
+     this.getData();
+  }
 
-    async getKittens() {
-        let url = `${this.API_URL}/kittens`; // URL of the API.
-        let result = await fetch(url); // Get the data
-        let json = await result.json(); // Turn it into json
-        return this.setState({ // Set it in the state
-            kittens: json
-        })
-    }
+//using async and await
+async getData() {
+      const response = await fetch(`http://localhost:8080/api/questions`);
+      const json = await response.json();
+      this.setState({data: json});
+}
 
-    getKitten(id) {
-        // Find the relevant kitten by id
-        return this.state.kittens.find(k => k._id === id);
-    }
+  //get the question from inside the compoment
+  //have to turn the string (id) into a number using Number,
+  getQuestion(id) {
+    return this.state.data.find(question => question._id === id);
+  }
 
-    render() {
-        return (
-            <div className="container">
-                <Router>
-                    <Kitten path="/kitten/:id" getKitten={id => this.getKitten(id)} />
-                    <Kittens path="/" kittens={this.state.kittens}/>
-                </Router>
-            </div>
-        );
-    }
+    /*POST NEW QUESTION */
+  askQuestion(id, text) {
+    const url = 'http://localhost:8080/api/questions'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: text
+      }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then(response => response.json())
+        .then(json => {
+          this.getData();
+        });
+  }
+
+
+  /*POST NEW ANSWER */
+  postAnswer(id, text) {
+    const url = 'http://localhost:8080/api/questions/'+id+'/answers';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: text,
+      }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then(response => response.json())
+        .then(json => {
+          console.log("New Answer added");
+          this.getData();
+        });
+  }
+
+  render() {
+    return (
+        <React.Fragment>
+            <h1>Seek and you shall find the answer</h1>
+          <Router>
+            <Questions path="/" data={this.state.data}
+                       askQuestion ={(id, text) => this.askQuestion(id, text)}>
+            </Questions>
+            <Question path="/question/:id"
+                      loadQuestion={(id) => this.getQuestion(id)}
+                      postAnswer={(id, text) => this.postAnswer(id, text)}
+                      />
+          </Router>
+        </React.Fragment>
+    );
+  }
 }
 
 export default App;
