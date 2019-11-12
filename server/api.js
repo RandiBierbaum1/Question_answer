@@ -94,8 +94,8 @@ app.get('*', (request, response) =>
 
 
 /**** Start ****/
-//const url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
-const url = (process.env.MONGO_URL || 'mongodb+srv://randi:Sommerfugl89@cluster0-retun.mongodb.net/test?retryWrites=true&w=majority');
+let url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
+//const url = (process.env.MONGO_URL || 'mongodb+srv://randi:Sommerfugl89@cluster0-retun.mongodb.net/test?retryWrites=true&w=majority');
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(async () => {
         await app.listen(port); // Start the API
