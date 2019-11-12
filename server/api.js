@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+let dbUrl = process.env.MONGO_URL || 'mongodb://localhost/question_db';
 const path = require('path');
 
 /**** Configuration ****/
@@ -94,8 +95,9 @@ app.get('*', (request, response) =>
 
 
 /**** Start ****/
-const url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
+//const url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
+//const url = (process.env.MONGO_URL || 'mongodb+srv://randi:Sommerfugl89@cluster0-retun.mongodb.net/test?retryWrites=true&w=majority');
+mongoose.connect(dbUrl, {useNewUrlParser: true})
     .then(async () => {
         await app.listen(port); // Start the API
         console.log(`Question API running on port ${port}!`)
