@@ -48,18 +48,18 @@ const data = [
 const questionDB = require('./QA_DB')(mongoose);
 
 /****Routes ****/
-app.get('/api/questions', (request, response) => {
+app.get('/questions', (request, response) => {
     questionDB.getQuestions().then(questions => response.json(questions));
 });
 
 
-app.get('/api/questions/:id', (request, response) => {
+app.get('/questions/:id', (request, response) => {
     let id = request.params.id;
     questionDB.getQuestion(id).then(question => response.json(question));
 });
 
 /**** Post new question ****/
-app.post('/api/questions', (request, response) => {
+app.post('/questions', (request, response) => {
     let question = {
         text : request.body.text,
         answers : [
@@ -70,18 +70,18 @@ app.post('/api/questions', (request, response) => {
 });
 
 ///Post new answer for a specific question id
-app.post('/api/questions/:id/answers', (request, response) => {
+app.post('/questions/:id/answers', (request, response) => {
     console.log(request.params);
     questionDB.addAnswer(request.params.id, request.body.text)
         .then(updateQuestion => response.json(updateQuestion));
 });
 
-app.put('/api/questions/:id/answers/:aid', (request, response) => {
+app.put('/questions/:id/answers/:aid', (request, response) => {
     questionDB.upVoteAnswer(request.params.id, request.params.aid)
         .then(updateAnswer => response.json(updateAnswer));
 });
 
-app.put('/api/questions/:id/answers/:aid', (request, response) => {
+app.put('/questions/:id/answers/:aid', (request, response) => {
     questionDB.downvoteAnswer(request.params.id, request.params.aid)
         .then(updateAnswer => response.json(updateAnswer));
 });
@@ -93,10 +93,10 @@ app.get('*', (request, response) =>
 
 
 /**** Start ****/
-//let url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
-//mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
-mongoose.connect('mongodb+srv://randi:Sommerfugl89@cluster0-retun.mongodb.net/test?retryWrites=true&w=majority',
-    {useNewUrlParser: true, useUnifiedTopology: true})
+let url = (process.env.MONGO_URL || 'mongodb://localhost/question_db');
+mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
+//mongoose.connect('mongodb+srv://randi:Sommerfugl89@cluster0-retun.mongodb.net/test?retryWrites=true&w=majority',
+//    {useNewUrlParser: true, useUnifiedTopology: true})
     .then(async () => {
         await app.listen(port); // Start the API
         console.log(`Question API running on port ${port}!`)
