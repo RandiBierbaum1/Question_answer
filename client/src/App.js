@@ -5,6 +5,9 @@ import Question from "./Question";
 import Questions from "./Questions";
 
 class App extends Component {
+
+    API_URL = process.env.REACT_APP_API_URL;
+
   constructor(props) {
     super(props);
 
@@ -19,7 +22,8 @@ class App extends Component {
 
 //using async and await
 async getData() {
-      const response = await fetch(`http://localhost:8080/api/questions`);
+      let url = `${this.API_URL}/questions`; // URL of the API.
+      const response = await fetch(url);
       const json = await response.json();
       this.setState({data: json});
 }
@@ -32,7 +36,7 @@ async getData() {
 
     /*POST NEW QUESTION */
   askQuestion(id, text) {
-    const url = 'http://localhost:8080/api/questions'
+    const url = `${this.API_URL}/questions`;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -51,7 +55,7 @@ async getData() {
 
   /*POST NEW ANSWER */
   postAnswer(id, text) {
-    const url = 'http://localhost:8080/api/questions/'+id+'/answers';
+    const url = `${this.API_URL}/questions/`+id+'/answers';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

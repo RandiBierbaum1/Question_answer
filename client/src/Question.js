@@ -9,7 +9,7 @@ class Question extends Component{
 
 
     addVote(id, aid) {
-        const url ='http://localhost:8080/api/questions/'+id+'/answers/'+ aid;
+        const url = `${this.API_URL}/questions/`+id+'/answers/'+ aid;
         fetch(url, {
             method: 'PUT',
             body: JSON.stringify({
@@ -27,7 +27,7 @@ class Question extends Component{
 
 
     decreaseVote(id, aid) {
-        const url ='http://localhost:8080/api/questions/'+id+'/answers/' + aid;
+        const url =`${this.API_URL}/questions/`+id+'/answers/'+ aid;
         fetch(url, {
             method: 'PUT',
             body: JSON.stringify({
